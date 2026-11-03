@@ -10,6 +10,7 @@ import { TestingComponent } from './components/testing/testing.component';
 import { AdminComponent } from './components/admin/admin.component';
 
 export const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
@@ -18,9 +19,5 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'testing', component: TestingComponent},
   {path: 'admin', component: AdminComponent},
-
-
-
-
-
+  {path: '**', redirectTo: 'home'},
 ];

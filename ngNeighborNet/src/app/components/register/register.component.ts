@@ -4,6 +4,7 @@ import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Address } from '../../models/address';
+import { finalize, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,8 @@ import { Address } from '../../models/address';
 export class RegisterComponent {
   // newUser: User = new User();
   newUser: User = new User();
+  errorMessage = '';
+  submitting = false;
 
 
   constructor(
@@ -26,23 +29,24 @@ export class RegisterComponent {
 
   }
   register(user: User) : void {
-
-    console.log("Registering User:" + user);
-    console.log(user);
-    this.auth.register(user).subscribe({
-      next: (registeredUser) => {
-        console.log("GOOD SO FAR!!!!");
-        this.auth.login(user.username, user.password).subscribe({
-          next: (loggedInUser) => {
-            this.router.navigateByUrl('/landing');
-          },
-          error: (problem) => {
-            console.error('RegisterComponent.register(): Error loggin in user: ');
-            console.error(problem);
-          }
-        })
+    if (this.submitting) return;
+    this.errorMessage = '';
+    this.submitting = true;
+    let registered = false;
+    this.auth.register(user).pipe(
+      switchMap(() => {
+        registered = true;
+        return this.auth.login(user.username, user.password);
+      }),
+      finalize(() => this.submitting = false)
+    ).subscribe({
+      next: () => this.router.navigateByUrl('/landing'),
+      error: () => {
+        this.errorMessage = registered
+          ? 'Your account was created. Please use the login page to sign in.'
+          : 'Registration failed. Check your details or try a different username.';
       }
-    })
+    });
   }
 
 }

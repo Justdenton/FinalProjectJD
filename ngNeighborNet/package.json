@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:smoke": "ng test --watch=false --karma-config=karma.smoke.conf.cjs --include=src/app/resume-readiness.spec.ts"
   },
   "private": true,
   "dependencies": {
@@ -16,6 +17,7 @@
     "@angular/core": "^18.2.0",
     "@angular/forms": "^18.2.0",
     "@angular/google-maps": "^18.2.6",
+    "@angular/localize": "18.2.6",
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",

@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +28,7 @@ public class User {
 	private int id;
 
 	private String username;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	private String role;
 	private boolean enabled;
@@ -244,7 +246,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enabled="
+		return "User [id=" + id + ", username=" + username + ", role=" + role + ", enabled="
 				+ enabled + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", createDate="
 				+ createDate + ", modifiedDate=" + modifiedDate + ", imageUrl=" + imageUrl + "]";
 	}

@@ -82,27 +82,15 @@ export class ProfileComponent implements OnInit {
   }
 
   updateReport(report: Report): void {
-    console.log('in updateReport() - profile.ts');
-    console.log(report);
     this.reportService.update(report).subscribe({
-      next: (updatedReport) => {
+      next: () => {
         this.selected = null;
         this.editReport = null;
+        this.showUpdateForm = null;
+        this.reload();
       },
-      error: (oopsy) => {
-        console.error('error editing todo: ');
-        console.error(oopsy);
-      },
+      error: (error) => console.error('Error updating report:', error),
     });
-    if (this.editReport) {
-      this.reportService.update(this.editReport).subscribe({
-        next: () => {
-          this.reload();
-          this.editReport;
-          this.showUpdateForm = null;
-        },
-      });
-    }
   }
 
   setEditEvent(): void {
