@@ -1,7 +1,7 @@
 
 <div class="container-md">
   <h1>Register your account</h1>
-  <form>
+  <form (ngSubmit)="register(newUser)">
     <div class="form-group row">
       <input type="text" name="email" placeholder="Email" [(ngModel)]="newUser.email">
     </div>
@@ -11,7 +11,7 @@
     </div>
 
     <div class="form-group row">
-      <input type="text" name="password" placeholder="Password" [(ngModel)]="newUser.password">
+      <input type="password" autocomplete="new-password" name="password" placeholder="Password" [(ngModel)]="newUser.password">
     </div>
 
     <div class="form-group row">
@@ -23,38 +23,39 @@
     </div>
 
     <div class="form-group row">
-      <input type="text" name="email" placeholder="Profile Image" [(ngModel)]="newUser.imageUrl">
+      <input type="text" name="imageUrl" placeholder="Profile Image" [(ngModel)]="newUser.imageUrl">
     </div>
 
     <br>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="Name of Location" [(ngModel)]="newUser.address.name"><br>
+      <input type="text" name="locationName" placeholder="Name of Location" [(ngModel)]="newUser.address.name"><br>
     </div>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="Street" [(ngModel)]="newUser.address.street">
+      <input type="text" name="street" placeholder="Street" [(ngModel)]="newUser.address.street">
     </div>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="City" [(ngModel)]="newUser.address.city">
+      <input type="text" name="city" placeholder="City" [(ngModel)]="newUser.address.city">
     </div>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="State" [(ngModel)]="newUser.address.state">
+      <input type="text" name="state" placeholder="State" [(ngModel)]="newUser.address.state">
     </div>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="Postal Code" [(ngModel)]="newUser.address.postalCode">
+      <input type="text" name="postalCode" placeholder="Postal Code" [(ngModel)]="newUser.address.postalCode">
     </div>
 
     <div class="form-group row">
-      <input type="text" name="name" placeholder="Country" [(ngModel)]="newUser.address.country">
+      <input type="text" name="country" placeholder="Country" [(ngModel)]="newUser.address.country">
     </div>
 
   <br>
 
-  <input (click)="register(newUser)" type="text" type="submit" value="Submit" class="btn btn-outline-primary ms-2">
+  <p role="alert">{{ errorMessage }}</p>
+  <button type="submit" class="btn btn-outline-primary ms-2" [disabled]="submitting">Register</button>
 
 </form>
 

@@ -24,7 +24,7 @@ export class ReportService {
   }
 
   index(): Observable<Report[]> {
-    return this.http.get<Report[]>(this.url, this.getHttpOptions()).pipe(
+    return this.http.get<Report[]>(this.url).pipe(
       catchError((err: any) => {
         console.error(err);
         return throwError(

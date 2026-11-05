@@ -97,6 +97,9 @@ public class CommentServiceImpl implements CommentService {
 		Comment existingComment = null;
 		if (commentOpt.isPresent()) {
 			existingComment = commentOpt.get();
+			if (!existingComment.getUser().getUsername().equals(username)) {
+				return null;
+			}
 			existingComment.setEnabled(false);
 			commentRepo.saveAndFlush(existingComment);
 			return existingComment;

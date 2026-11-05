@@ -34,9 +34,41 @@ implementation project (':NeighborNetJPA')
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Package the current Angular source, rather than old checked-in bundles.
+def frontendDir = file('../ngNeighborNet')
+def frontendDist = file('../ngNeighborNet/dist/ng-neighbor-net/browser')
+def npmCommand = System.getProperty('os.name').toLowerCase().contains('windows') ? 'npm.cmd' : 'npm'
+
+tasks.register('installFrontend', Exec) {
+	workingDir frontendDir
+	commandLine npmCommand, 'ci', '--no-audit', '--no-fund'
+	inputs.files file('../ngNeighborNet/package.json'), file('../ngNeighborNet/package-lock.json')
+	outputs.dir file('../ngNeighborNet/node_modules')
+}
+
+tasks.register('buildFrontend', Exec) {
+	dependsOn 'installFrontend'
+	workingDir frontendDir
+	commandLine npmCommand, 'run', 'build'
+	inputs.dir file('../ngNeighborNet/src')
+	inputs.dir file('../ngNeighborNet/public')
+	inputs.files fileTree(frontendDir) { include '*.json' }
+	outputs.dir frontendDist
+}
+
+tasks.named('processResources') {
+	dependsOn 'buildFrontend'
+	from(frontendDist) { into 'static' }
+}
+
+tasks.named('bootWar') {
+	archiveFileName = 'NeighborNet.war'
 }

@@ -88,6 +88,9 @@ public class ReportServiceImpl implements ReportService {
 		Report managedReport = null;
 		if (reportOpt.isPresent()) {
 			managedReport = reportOpt.get();
+			if (!managedReport.getUser().getUsername().equals(username)) {
+				return null;
+			}
 			managedReport.setName(updatedReport.getName());
 			managedReport.setDescription(updatedReport.getDescription());
 			managedReport.setImageUrl(updatedReport.getImageUrl());
@@ -106,6 +109,9 @@ public class ReportServiceImpl implements ReportService {
 		Report managedReport = null;
 		if (reportOpt.isPresent()) {
 			managedReport = reportOpt.get();
+			if (!managedReport.getUser().getUsername().equals(username)) {
+				return null;
+			}
 			managedReport.setEnabled(false);
 			reportRepo.saveAndFlush(managedReport);
 			return managedReport;
