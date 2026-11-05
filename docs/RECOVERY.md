@@ -4,7 +4,7 @@ These repairs do not restore the public deployment by themselves.
 
 ## Build and test
 
-Requirements: Java 21, Node.js and npm compatible with Angular 18, and Chrome for frontend tests.
+Requirements: a full Java 21 JDK (including `javac`), Node.js 22 with npm, Python 3, and Chrome for frontend tests. Node 24 is not in Angular 18's supported Node range. Set `JAVA_HOME` to the JDK and `CHROME_BIN` if Chrome is not on the default path.
 
 ```sh
 cd ngNeighborNet
@@ -12,7 +12,13 @@ npm ci
 npm run test:smoke
 cd ../NeighborNet
 bash gradlew :test :bootWar
+cd ..
+python3 scripts/verify-war.py
 ```
+
+The `NeighborNet recovery checks` GitHub Actions workflow runs the same focused frontend tests, isolated backend tests, WAR build and packaged-asset check on pull requests. It has read-only repository permission and no deployment credentials. A green run does not verify production MySQL, HTTPS or Google Maps.
+
+For the current access diagnosis and secure environment setup, see [Access and hosting handoff](ACCESS.md).
 
 The root application tests use an isolated H2 database. The legacy NeighborNetJPA entity tests still expect their original seeded MySQL database and are not included in `:test`. Production MySQL and Google Maps have not been verified by these tests.
 
